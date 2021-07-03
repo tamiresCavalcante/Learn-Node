@@ -2,7 +2,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { MONGO_URI } = require('./config')
 
+// Routes
+const postsRoutes = require('./routes/api/posts');
+
 const app = express();
+
+// BodyParser Middleware
+app.use(express.json());
 
 // Connect to mongoDB
 mongoose.connect(MONGO_URI, {
@@ -12,10 +18,9 @@ mongoose.connect(MONGO_URI, {
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.log(err))
 
+// User routes
+app.use('api/posts', postsRoutes);
 
-app.get('/', (req, res) => {
-
-})
 
 const PORT = process.env.PORT || 5000;
 
