@@ -47,11 +47,26 @@ router.delete('/:d', async (req, res) => {
 
 // @routes UPDATE api/posts
 // @description Update an post
-router.patch('/:id', (req, res) => {
+router.patch('/:id', async (req, res) => {
     try {
-        const post = await Post.findByIdAndUpdate(re.params.id)
+        const post = await Post.findByIdAndUpdate(req.params.id, req.body);
+        if(!post) throw Error('Something went wrong while updating');
+
+        res.status(200).json({ sucess: true });
     } catch(err) {
         res.status(400).json({ msg: err });
+    }
+})
+
+// @routes GET api/posts
+// @description Get all post
+router.get('/:id', async (req, res) => {
+    try {
+        const post = await Posts.findById(req.params.id);
+        if(!post) throw Error('No items');
+        res.status(200).json(post);
+    } catch(err) {
+        res.status(400).json({ msg: err })
     }
 })
 
